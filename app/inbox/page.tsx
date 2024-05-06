@@ -1,4 +1,4 @@
-import Conversation from "../components/inbox/page";
+import Conversation from "../components/inbox/Conversation";
 
 const InboxPage = () => {
   return (
