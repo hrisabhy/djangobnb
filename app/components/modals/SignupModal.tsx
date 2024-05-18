@@ -5,6 +5,7 @@ import CustomButton from "../forms/CustomButton";
 import useSignupModal from "../../hooks/useSignupModaI";
 import { useRouter } from "next/navigation";
 import apiService from "@/app/services/apiService";
+import { handleLogin } from "@/app/lib/actions";
 
 const SignupModal = () => {
   const [email, setEmail] = useState("");
@@ -26,7 +27,7 @@ const SignupModal = () => {
     );
     console.log(response);
     if (response.access) {
-      // handleLogin
+      handleLogin(response.user.pk, response.access, response.refresh);
       signupModal.close();
       router.push("/");
     } else {
