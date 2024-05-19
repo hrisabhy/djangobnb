@@ -23,6 +23,7 @@ const AddPropertyModal = () => {
   const [dataGuests, setDataGuests] = useState("");
   const [dataCountry, setDataCountry] = useState<SelectCountryValue>();
   const [dataImage, setDataImage] = useState<File | null>(null);
+  const [errors, setErrors] = useState<string[]>([]);
 
   const submitForm = async () => {
     console.log("submitForm");
@@ -52,6 +53,8 @@ const AddPropertyModal = () => {
         formData
       );
 
+      console.log(response);
+
       if (response.success) {
         console.log("Success!");
 
@@ -60,6 +63,14 @@ const AddPropertyModal = () => {
         addPropertyModal.close();
       } else {
         console.log("error");
+
+        const tmpErrors: string[] = Object.values(response).map(
+          (error: any) => {
+            return error;
+          }
+        );
+
+        setErrors(tmpErrors);
       }
     }
   };
@@ -212,6 +223,17 @@ const AddPropertyModal = () => {
               </div>
             )}
           </div>
+
+          {errors.map((error, index) => {
+            return (
+              <div
+                key={index}
+                className="p-5 mb-4 bg-airbnb text-white rounded-xl opacity-80"
+              >
+                {error}
+              </div>
+            );
+          })}
 
           <CustomButton
             label="Previous"
