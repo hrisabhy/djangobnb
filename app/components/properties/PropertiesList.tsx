@@ -16,7 +16,7 @@ const PropertiesList = () => {
   const getProperties = async () => {
     const url = "api/properties";
     const tempProperties = await apiService.get(url);
-    setProperties(tempProperties);
+    setProperties(tempProperties.data);
   };
   useEffect(() => {
     getProperties();

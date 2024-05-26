@@ -1,7 +1,15 @@
 import ReservationSidebar from "@/app/components/properties/ReservationSidebar";
 import Image from "next/image";
 
-const PropertyPage = () => {
+import apiService from "@/app/services/apiService";
+import { getUserId } from "@/app/lib/actions";
+import Link from "next/link";
+
+const PropertyPage = async ({ params }: { params: { id: string } }) => {
+  const property = await apiService.get(`api/properties/${params.id}`);
+  const userId = await getUserId();
+  console.log(property);
+
   return (
     <div className="max-w-[1500px] px-6 mx-auto">
       <div className="w-full h-[64vh] mb-4 relative rounded-xl overflow-hidden">
@@ -15,23 +23,35 @@ const PropertyPage = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
         <div className="py-6 pr-6 col-span-3">
-          <h1 className="mb-4 text-4xl">Property Title</h1>
+          <h1 className="mb-4 text-4xl">{property.title}</h1>
           <span className="mb-6 block text-lg text-gray-600">
-            4 guests - 2 bedrooms - 1 bathrooms
+            {property.guests} guests - {property.bedrooms} bedrooms -{" "}
+            {property.bathrooms} bathrooms
           </span>
           <hr />
 
-          <div className="py-6 flex items-center space-x-4">
-            <Image
-              width={50}
-              height={50}
-              className="rounded-full"
-              alt="profile image"
-              src="/profile_pic_1.jpg"
-            />
-          </div>
+          <Link
+            href={`/landlords/${property.landlord.id}`}
+            className="py-6 flex items-center space-x-4"
+          >
+            {property.landlord.avatar_url && (
+              <Image
+                src={property.landlord.avatar_url}
+                width={50}
+                height={50}
+                className="rounded-full"
+                alt="The user name"
+              />
+            )}
+
+            <p>
+              <strong>{property.landlord.name}</strong> is your host
+            </p>
+          </Link>
+
+          <hr />
           <p>
-            <strong>hrisabhy</strong> is your host
+            <strong>{property.landlord.name}</strong> is your host
           </p>
           <hr />
 
@@ -56,7 +76,7 @@ const PropertyPage = () => {
           </p>
         </div>
 
-        <ReservationSidebar />
+        <ReservationSidebar property={property} userId={userId} />
       </div>
     </div>
   );

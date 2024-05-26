@@ -2,7 +2,7 @@ import { getAccessToken } from "../lib/actions";
 
 const apiService = {
   get: async function (url: string): Promise<any> {
-    console.log("testing", url);
+    console.log("get", url);
 
     const token = await getAccessToken();
 
@@ -17,7 +17,8 @@ const apiService = {
       })
         .then((response) => response.json())
         .then((json) => {
-          resolve(json.data);
+          console.log("Response:", json);
+          resolve(json);
         })
         .catch((error) => {
           reject(error);
